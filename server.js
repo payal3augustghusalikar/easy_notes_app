@@ -28,19 +28,26 @@ mongoose.connect(dbConfig.url, {
 });
 
 
-// define a simple route
+// define a simple route and data in json format
 app.get('/', (req, res) => {
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."}); 
 });
 
-// ........
+// ........ 
 
-// Require Notes routes
+// Require Notes routes  
 require('./app/routes/note.routes.js')(app);
 
 // ........
 
-// listen for requests
-app.listen(3000, () => {
+// listen for requests using callback
+app.listen(3000, () => { 
     console.log("Server is listening on port 3000");
 });
+
+
+
+
+
+
+
