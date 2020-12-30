@@ -1,5 +1,6 @@
 
 //const Note = require('../models/note.model.js');
+const noteModel = require('../models/note.model.js');
 const service = require('../services/services')
 
 
@@ -178,10 +179,39 @@ const service = require('../services/services')
 //     };
 
 
+//Delete a note with the specified noteId in the request
+exports.delete = (req, res) => {
+    try {
+        const noteID = req.params.noteId
+        service.delete(noteID, note => {
+            if (!note) {
+                return res.status(404).send({
+                    message: "Note not found with id " + req.params.noteId
+                });
+            }
+            res.send({
+                message: "Note deleted successfully!"
+            })
+        })
+    }
+
+    catch (error) {
+        if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Note not found with id " + req.params.noteId
+            });
+        }
+        return res.status(500).send({
+            message: "Could not delete note with id " + req.params.noteId
+        });
+    }
+}
 
 
 
 
+//     });
+// }
 
 
 
@@ -231,11 +261,11 @@ const Note = require('../models/note.model.js');
  * @description Create and Save message
  */
 exports.create = (req, res) => {
-  //  const content = req.body.content
-  const note = new Note({
-    title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
-    content: req.body.content
-});
+    //  const content = req.body.content
+    const note = new Note({
+        title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
+        content: req.body.content
+    });
 
     service.saveData(note, (err, result) => {
         if (err) {
@@ -246,12 +276,11 @@ exports.create = (req, res) => {
             res.status(200).send(result)
         }
     })
-
 };
 
 
 
-// Retrieve and return all notes from the database.
+//Retrieve and return all notes from the database.
 exports.findAll = (req, res) => {
     Note.find()
         .then(notes => {
@@ -265,9 +294,9 @@ exports.findAll = (req, res) => {
 
 // exports.findAll = (request, response) => {
 //     try {
-//         service.findAll((error, data) => {
+//         service.findAll((notes) => {
 //             //  response.status(200).send(data);
-//             response.send(data)
+//             response.send(notes)
 //         });
 //     } catch (error) {
 //         response.status(500).send(error.message);
@@ -312,9 +341,9 @@ exports.findAll = (req, res) => {
 //                 return res.status(404).send({
 //                     message: "Note not found with id " + req.params.noteId
 //                 });
-              
+
 //             };
-           
+
 //         });
 //         response.send(note);
 //     });
@@ -329,33 +358,34 @@ exports.findAll = (req, res) => {
 
 
 exports.findOne = (req, res) => {
-        try {
-const noteData = {
-    noteID : req.params.noteId
-}
-         
-        //Note.findById(req.params.noteId => {
-        service.findOne(noteID, (data,error) => {
+    try {
+        // const noteData = {
+        //     noteID : req.params.noteId
+        // }
 
-                if (!data) {
-                    return res.status(404).send({
-                        message: "Note not found with id " + req.params.noteId
-                    });
-                  
-                };
-               
-            });
-            response.send(noteData.noteID);
-     
-    
-     } catch (error) {
-            //  return res.status(500).send({
-            //      message: "Error retrieving note with id " + req.params.noteId
-    
-             }
-    
+        const noteID = req.params.noteId
+
+        //Note.findById(req.params.noteId => {
+        service.findOne(noteID, (data, error) => {
+
+            if (!data) {
+                return res.status(404).send({
+                    message: "Note not found with id " + req.params.noteId
+                });
+
+            };
+
+        });
+        response.send(data.noteID);
+
+
+    } catch (error) {
+        //  return res.status(500).send({
+        //      message: "Error retrieving note with id " + req.params.noteId
+
     }
 
+}
 
 
 
@@ -396,24 +426,24 @@ exports.update = (req, res) => {
 };
 
 // Delete a note with the specified noteId in the request
-exports.delete = (req, res) => {
-    Note.findByIdAndRemove(req.params.noteId)
-        .then(note => {
-            if (!note) {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.noteId
-                });
-            }
-            res.send({ message: "Note deleted successfully!" });
-        }).catch(err => {
-            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.noteId
-                });
-            }
-            return res.status(500).send({
-                message: "Could not delete note with id " + req.params.noteId
-            });
-        });
-};
+// exports.delete = (req, res) => {
+//     Note.findByIdAndRemove(req.params.noteId)
+//         .then(note => {
+//             if (!note) {
+//                 return res.status(404).send({
+//                     message: "Note not found with id " + req.params.noteId
+//                 });
+//             }
+//             res.send({ message: "Note deleted successfully!" });
+//         }).catch(err => {
+//             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+//                 return res.status(404).send({
+//                     message: "Note not found with id " + req.params.noteId
+//                 });
+//             }
+//             return res.status(500).send({
+//                 message: "Could not delete note with id " + req.params.noteId
+//             });
+//         });
+// };
 

@@ -1,4 +1,5 @@
 const noteModel = require('../models/note.model')
+
 //const util = require('../utility/util')
 
 // //Note.find(callback) {
@@ -57,13 +58,13 @@ exports.findAll = (callBack) => {
         if (error)
             return callBack(new Error("Some error occurred while retrieving notes"), null)
         else
-            return callBack(null, data)
+            return callBack(data)
     })
 }
 
 
 
-findOne = (noteID, callBack) => {
+exports.findOne = (noteID, callBack) => {
     noteModel.findOne(noteID, (error, data) => {
         if (error)
             return callBack(error, null);
@@ -87,8 +88,8 @@ updateNote = (Data, callBack) => {
 /**
  *@description Delete note
  */
-deleteNote = (Data, callBack) => {
-    noteModel.delete(Data, (error, data) => {
+exports.delete = (noteID, callBack) => {
+    noteModel.delete((noteID), (data, error)  => {
         if (error)
             return callBack(new Error("Some error occurred while deleting note"))
         else

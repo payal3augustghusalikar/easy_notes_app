@@ -21,7 +21,7 @@ exports.create = (note, callback) => {
         if (err) {
             callback(err, null);
         } else {
-           return callback(null, data)
+            return callback(null, data)
         }
     })
 }
@@ -30,12 +30,11 @@ exports.create = (note, callback) => {
 //find all notes 
 // param callback will call service class method
 exports.findAll = (callBack) => {
-    Note.find({}, (error, data) => {
+    Note.find((error, data) => {
         if (error)
             return callBack(error, data)
         else
-            // console.log(data);
-            return callBack(null, data)
+            return callBack(data)
     })
 }
 
@@ -46,6 +45,16 @@ exports.findOne = (noteData, callBack) => {
         return callBack(null, data);
     });
 }
+
+exports.delete = (noteID, callBack) => {
+    Note.findByIdAndRemove(noteID, (error, data) => {
+        if (error)
+            return callBack(error, null);
+        return callBack(null, data);
+    });
+}
+
+
 
 
 
