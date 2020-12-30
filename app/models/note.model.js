@@ -12,11 +12,14 @@ const NoteSchema = mongoose.Schema({
 // creating a nw collection
 const Note = mongoose.model('Note', NoteSchema)
 
+
+class model {}
+/**
+ * @description create new note
+ * @param {*} note 
+ * @param {*} callback calls service method
+ */
 exports.create = (note, callback) => {
-    // const note = new Note({
-    //     title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
-    //     content: req.body.content
-    // });
     note.save({}, (err, data) => {
         if (err) {
             callback(err, null);
@@ -26,9 +29,10 @@ exports.create = (note, callback) => {
     })
 }
 
-
-//find all notes 
-// param callback will call service class method
+/**
+ * @description find all notes
+ * @param {*} callBack calls service method
+ */
 exports.findAll = (callBack) => {
     Note.find((error, data) => {
         if (error)
@@ -38,6 +42,11 @@ exports.findAll = (callBack) => {
     })
 }
 
+/**
+ * @description find searched note by its id
+ * @param {*} noteID takes from request
+ * @param {*} callBack calls service method
+ */
 exports.findNote = (noteID, callBack) => {
     Note.findById(noteID, (error, data) => {
         if (error)
@@ -47,6 +56,12 @@ exports.findNote = (noteID, callBack) => {
     });
 }
 
+
+/**
+ * @description delete searched note by its id
+ * @param {*} noteID takes from request
+ * @param {*} callBack calls service method
+ */
 exports.delete = (noteID, callBack) => {
     Note.findByIdAndRemove(noteID, (error, data) => {
         if (error)
@@ -55,21 +70,14 @@ exports.delete = (noteID, callBack) => {
     });
 }
 
-exports.updateNote = (noteID,  callBack) => {
-    Note.findByIdAndUpdate(noteID,  {
-        title: req.body.title || "Untitled Note",
-        content: req.body.content
-    }, { new: true } , (error, data) => {
+/** */
+exports.updateNote = (noteID,  note, callBack) => {
+    Note.findByIdAndUpdate(noteID,  (error, data) => {
         if (error)
             return callBack(error, null);
-        return callBack(null,  data);
+        return callBack(null, note, data);
     });
 }
 
 
-
-
-
-
-//module.exports = new Model()
 module.exports = mongoose.model('Note', NoteSchema);

@@ -1,58 +1,25 @@
 const noteModel = require('../models/note.model')
 
-//const util = require('../utility/util')
-
-// //Note.find(callback) {
-//   const findAll = (callBack) => {
-//         noteModel.findAll((error, data) => {
-//             if (error)
-//                 return callBack(new Error("Some error occurred while retrieving notes"), null)
-//             return callBack(null, data)
-//         })
-//     }
-
-
-
-
-// createNote = (noteData, callBack) => {
-//     noteModel.create(noteData, (error, data) => {
-//         if (error)
-//             return callBack(new Error("Some error occurred while adding note"), null)
-//         else
-//             return callBack(null, data)
-//     })
-// }
-
-
-exports.saveData = (data, callback) => {
-    noteModel.create(data, (err, result) => {
+/**
+ * @description create new note 
+ * @param {*} data 
+ * @param {*} callback calls controller method
+ */
+exports.createNewNote = (data, callback) => {
+    noteModel.create(data, (err, data) => {
         if (err) {
             callback(err, null)
         } else {
-            return callback(null, result);
+            return callback(null, data);
         }
     })
 }
 
 /**
- *@description Retrieve notes
- *@param callback calls controller class method
+ * @description find all notes
+ * @param {*} callBack calls controller method
  */
-
-// findAll = (callBack) => {
-//    // if (noteModel.findAll) {
-//         Note.find((error, data) => {
-//             if (error)
-//                 return callBack(new Error("Some error occurred while retrieving notes"), null)
-//             else
-//                 return callBack(null, data)
-//         })
-//     }
-// }
-
-
 exports.findAll = (callBack) => {
-
     noteModel.findAll((data, error) => {
         if (error)
             return callBack(new Error("Some error occurred while retrieving notes"), null)
@@ -61,8 +28,11 @@ exports.findAll = (callBack) => {
     })
 }
 
-
-
+/**
+ * @description find note by _id
+ * @param {*} noteID 
+ * @param {*} callBack calls controller method
+ */
 exports.findNote = (noteID, callBack) => {
     noteModel.findNote((noteID), (data, error) => {
         if (error)
@@ -72,6 +42,11 @@ exports.findNote = (noteID, callBack) => {
     });
 }
 
+/**
+ * @description delete note by _id
+ * @param {*} noteID 
+ * @param {*} callBack 
+ */
 exports.delete = (noteID, callBack) => {
     noteModel.delete((noteID), (data, error) => {
         if (error)
@@ -81,12 +56,14 @@ exports.delete = (noteID, callBack) => {
     })
 }
 
-
 /**
- *@description Update notes 
+ * 
+ * @param {*} noteID 
+ * @param {*} note 
+ * @param {*} callBack 
  */
-exports.updateNote = (noteID, callBack) => {
-    noteModel.updateNote(noteID, (data, error) => {
+exports.updateNote = (noteID, note, callBack) => {
+    noteModel.updateNote(noteID, note, (data, error) => {
         if (error)
             return callBack(new Error("Some error occurred while updating note"), null)
         else
@@ -94,27 +71,3 @@ exports.updateNote = (noteID, callBack) => {
     })
 }
 
-/**
- *@description Delete note
- */
-
-
-// delete = (greetingData, callBack) => {
-//     Greeting.deleteById(greetingData, (error, data) => {
-//         if (error)
-//             return callBack(error, null);
-//         return callBack(null, data);
-//     });
-// }
-
-
-// const findAll = (callBack) => {
-//     noteModel.findAll((error, data) => {
-//         if (error)
-//             return callBack(new Error("Some error occurred while retrieving notes"), null)
-//         return callBack(null, data)
-//     })
-// }
-//module.exports = { findAll }
-
-//module.exports = new NoteService();
