@@ -85,8 +85,8 @@ exports.delete = (noteID, callBack) => {
 /**
  *@description Update notes 
  */
-updateNote = (Data, callBack) => {
-    noteModel.update(Data, (error, data) => {
+exports.updateNote = (noteID, callBack) => {
+    noteModel.updateNote(noteID, (data, error) => {
         if (error)
             return callBack(new Error("Some error occurred while updating note"), null)
         else

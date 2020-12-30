@@ -55,6 +55,18 @@ exports.delete = (noteID, callBack) => {
     });
 }
 
+exports.updateNote = (noteID,  callBack) => {
+    Note.findByIdAndUpdate(noteID,  {
+        title: req.body.title || "Untitled Note",
+        content: req.body.content
+    }, { new: true } , (error, data) => {
+        if (error)
+            return callBack(error, null);
+        return callBack(null,  data);
+    });
+}
+
+
 
 
 
