@@ -26,11 +26,11 @@ const noteModel = require('../models/note.model')
 
 exports.saveData = (data, callback) => {
     //console.log(data);
-    noteModel.create(data, (err,result) => {
+    noteModel.create(data, (err, result) => {
         if (err) {
             callback(err, null)
         } else {
-           return callback(null, result);
+            return callback(null, result);
         }
     })
 }
@@ -64,12 +64,22 @@ exports.findAll = (callBack) => {
 
 
 
-exports.findOne = (noteID, callBack) => {
-    noteModel.findOne(noteID, (error, data) => {
+exports.findNote = (noteID, callBack) => {
+    noteModel.findNote((noteID), (data, error) => {
         if (error)
             return callBack(error, null);
-        return callBack(null, data);
+        else
+            return callBack(null, data);
     });
+}
+
+exports.delete = (noteID, callBack) => {
+    noteModel.delete((noteID), (data, error) => {
+        if (error)
+            return callBack(new Error("Some error occurred while deleting note"))
+        else
+            return callBack(null, data)
+    })
 }
 
 
@@ -88,14 +98,6 @@ updateNote = (Data, callBack) => {
 /**
  *@description Delete note
  */
-exports.delete = (noteID, callBack) => {
-    noteModel.delete((noteID), (data, error)  => {
-        if (error)
-            return callBack(new Error("Some error occurred while deleting note"))
-        else
-            return callBack(null, data)
-    })
-}
 
 
 // delete = (greetingData, callBack) => {

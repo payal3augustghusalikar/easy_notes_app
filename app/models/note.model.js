@@ -38,11 +38,12 @@ exports.findAll = (callBack) => {
     })
 }
 
-exports.findOne = (noteData, callBack) => {
-    Note.findById(noteData.id, (error, data) => {
+exports.findNote = (noteID, callBack) => {
+    Note.findById(noteID, (error, data) => {
         if (error)
             return callBack(error, null);
-        return callBack(null, data);
+        else
+            return callBack(null, data);
     });
 }
 
