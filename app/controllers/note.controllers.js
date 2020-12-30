@@ -200,31 +200,55 @@ const service = require('../services/services')
 
 const Note = require('../models/note.model.js');
 
-// Create and Save a new Note
+// // Create and Save a new Note
+// exports.create = (req, res) => {
+//     // Validate request
+//     if (!req.body.content) {
+//         return res.status(400).send({
+//             message: "Note content can not be empty"
+//         });
+//     }
+
+//     // Create a Note
+//     const note = new Note({
+//         title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
+//         content: req.body.content
+//     });
+
+//     // Save Note in the database
+//     note.save()
+//         .then(data => {
+//             res.send(data);
+//         }).catch(err => {
+//             res.status(500).send({
+//                 message: err.message || "Some error occurred while creating the Note."
+//             });
+//         });
+// };
+
+
+/**
+ * @description Create and Save message
+ */
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.content) {
-        return res.status(400).send({
-            message: "Note content can not be empty"
-        });
-    }
+  //  const content = req.body.content
+  const note = new Note({
+    title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
+    content: req.body.content
+});
 
-    // Create a Note
-    const note = new Note({
-        title: req.body.title || "Untitled Note", //name is coming from request object i.e. we are passing in body
-        content: req.body.content
-    });
-
-    // Save Note in the database
-    note.save()
-        .then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the Note."
+    service.saveData(note, (err, result) => {
+        if (err) {
+            res.status(400).send({
+                message: `content can not be empty`
             });
-        });
+        } else {
+            res.status(200).send(result)
+        }
+    })
+
 };
+
 
 
 // Retrieve and return all notes from the database.
@@ -239,41 +263,104 @@ exports.findAll = (req, res) => {
         });
 };
 
-exports.findAll = (request, response) => {
-        try {
-            service.findAll((error, data) => {
-                //  response.status(200).send(data);
-                response.send(data)
-            });
-        } catch (error) {
-            response.status(500).send(error.message);
-        }
-    }
+// exports.findAll = (request, response) => {
+//     try {
+//         service.findAll((error, data) => {
+//             //  response.status(200).send(data);
+//             response.send(data)
+//         });
+//     } catch (error) {
+//         response.status(500).send(error.message);
+//     }
+// }
 
 
 
 
 // Find a single note with a noteId
+// exports.findOne = (req, res) => {
+//     Note.findById(req.params.noteId) // id is getting in url so params
+//         .then(note => {
+//             if (!note) {
+//                 return res.status(404).send({
+//                     message: "Note not found with id " + req.params.noteId
+//                 });
+//             }
+//             res.send(note);
+//         }).catch(err => {
+//             if (err.kind === 'ObjectId') {
+//                 return res.status(404).send({
+//                     message: "Note not found with id " + req.params.noteId
+//                 });
+//             }
+//             return res.status(500).send({
+//                 message: "Error retrieving note with id " + req.params.noteId
+//             });
+//         });
+// };
+
+
+
+
+// exports.findOne = (req, res) => {
+//     try {
+//      id = req.params.noteId;
+//     //Note.findById(req.params.noteId => {
+//     service.findOne(noteData => {
+//         (note => {
+//             if (!note) {
+//                 return res.status(404).send({
+//                     message: "Note not found with id " + req.params.noteId
+//                 });
+              
+//             };
+           
+//         });
+//         response.send(note);
+//     });
+
+//  } catch (error) {
+//         //  return res.status(500).send({
+//         //      message: "Error retrieving note with id " + req.params.noteId
+
+//          }
+
+// }
+
+
 exports.findOne = (req, res) => {
-    Note.findById(req.params.noteId) // id is getting in url so params
-        .then(note => {
-            if (!note) {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.noteId
-                });
-            }
-            res.send(note);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.noteId
-                });
-            }
-            return res.status(500).send({
-                message: "Error retrieving note with id " + req.params.noteId
+        try {
+const noteData = {
+    noteID : req.params.noteId
+}
+         
+        //Note.findById(req.params.noteId => {
+        service.findOne(noteID, (data,error) => {
+
+                if (!data) {
+                    return res.status(404).send({
+                        message: "Note not found with id " + req.params.noteId
+                    });
+                  
+                };
+               
             });
-        });
-};
+            response.send(noteData.noteID);
+     
+    
+     } catch (error) {
+            //  return res.status(500).send({
+            //      message: "Error retrieving note with id " + req.params.noteId
+    
+             }
+    
+    }
+
+
+
+
+
+
 
 // Update a note identified by the noteId in the request
 exports.update = (req, res) => {
