@@ -25,7 +25,6 @@ const noteModel = require('../models/note.model')
 
 
 exports.saveData = (data, callback) => {
-    //console.log(data);
     noteModel.create(data, (err, result) => {
         if (err) {
             callback(err, null)
@@ -54,7 +53,7 @@ exports.saveData = (data, callback) => {
 
 exports.findAll = (callBack) => {
 
-    noteModel.findAll((error, data) => {
+    noteModel.findAll((data, error) => {
         if (error)
             return callBack(new Error("Some error occurred while retrieving notes"), null)
         else

@@ -30,7 +30,7 @@ exports.create = (note, callback) => {
 //find all notes 
 // param callback will call service class method
 exports.findAll = (callBack) => {
-    Note.find((error, data) => {
+    Note.findOne((error, data) => {
         if (error)
             return callBack(error, data)
         else

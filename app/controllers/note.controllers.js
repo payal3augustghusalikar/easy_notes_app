@@ -83,7 +83,7 @@ const service = require('../services/services')
 exports.findOne = (req, res) => {
     try {
         const noteID = req.params.noteId;
-        service.findNote(noteID, note => {
+        service.find(noteID, note => {
             if (!note) {
                 return res.status(404).send({
                     message: "Note not found with id " + req.params.noteId
@@ -286,27 +286,27 @@ exports.findOne = (req, res) => {
 
 
     //Retrieve and return all notes from the database.
-    exports.findAll = (req, res) => {
-        Note.find()
-            .then(notes => {
-                res.send(notes);
-            }).catch(err => {
-                res.status(500).send({
-                    message: err.message || "Some error occurred while retrieving notes."
-                });
-            });
-    };
-
-    // exports.findAll = (request, response) => {
-    //     try {
-    //         service.findAll((notes) => {
-    //             //  response.status(200).send(data);
-    //             response.send(notes)
+    // exports.findAll = (req, res) => {
+    //     Note.find()
+    //         .then(notes => {
+    //             res.send(notes);
+    //         }).catch(err => {
+    //             res.status(500).send({
+    //                 message: err.message || "Some error occurred while retrieving notes."
+    //             });
     //         });
-    //     } catch (error) {
-    //         response.status(500).send(error.message);
-    //     }
-    // }
+    // };
+
+    exports.findAll = (request, response) => {
+        try {
+            service.findAll((notes) => {
+                //  response.status(200).send(data);
+                response.status(200).send(notes)
+            });
+        } catch (error) {
+            response.status(500).send(error.message);
+        }
+    }
 
 
 
